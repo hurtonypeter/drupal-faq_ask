@@ -3,6 +3,7 @@ vocabularies: []
 notify: false
 default_expert: 1
 unanswered_count: 3
+unanswered_body: 'Not answered yet.'
 expert_advice: 'If you select a question, you must answer it.'
 admin_advice: 'You are allowed to edit unanswered questions.'
 asker_advice: 'You may edit your own questions until they are answered.'

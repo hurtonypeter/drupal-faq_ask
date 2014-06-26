@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * This module is an add-on to the FAQ module that allows users with the 'ask question'
+ * permission to create a question which will be queued for an 'expert' to answer.
+ */
+
+/**
+ * Implements hook_permission().
+ *
+ * Define the permissions this module uses
+ *
+ * @return array
+ *   permissions defined for the faq_ask module
+ */
+function faq_ask_permission() {
+  return array(
+    'ask question' => array(
+      'title' => t('Ask a question'),
+      'description' => t('Ask a question to be submitted to an expert.'),
+      ),
+    'answer question' => array(
+      'title' => t('Answer a question'),
+      'description' => t('Answer a question submitted by someone asking.'),
+      ),
+    );
+}

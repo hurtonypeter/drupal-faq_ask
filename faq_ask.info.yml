@@ -1,0 +1,8 @@
+name: 'FAQ Ask'
+type: module
+description: 'Allows an unanswered question "queue" for the FAQ module.'
+core: 8.x
+version: VERSION
+package: FAQ
+dependencies:
+ - faq

@@ -1,0 +1,39 @@
+faq-ask.experts:
+    path: '/admin/config/content/faq/experts'
+    defaults:
+        _title: 'Experts'
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::settingsPage'
+    requirements:
+        _permission: 'administer faq'
+
+faq-ask.ask:
+    path: '/faq_ask'
+    defaults:
+        _title: 'Ask a question'
+        _content: ''
+    requirements:
+        _permission: 'ask question'
+
+faq-ask.unanswered:
+    path: '/faq_ask/unanswered'
+    defaults:
+        _title: 'List more unanswered questions'
+        _content: ''
+    requirements: 
+        _permission: 'anwer question'
+
+faq-ask.answer:
+    path: '/faq_ask/answer/{node}'
+    defaults:
+        _title: 'Answer a question'
+        _content: ''
+    requirements:
+        _permission: 'access content'
+
+faq-ask.edit:
+    path: '/faq_ask/edit/{node}'
+    defaults:
+        _title: 'Edit a question'
+        _content: ''
+    requirements:
+        _permission: 'access content'

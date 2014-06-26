@@ -1,0 +1,15 @@
+expert_role: []
+vocabularies: []
+notify: false
+default_expert: 1
+unanswered_count: 3
+expert_advice: 'If you select a question, you must answer it.'
+admin_advice: 'You are allowed to edit unanswered questions.'
+asker_advice: 'You may edit your own questions until they are answered.'
+help_text: 'Add a question for our expert to answer. After being answered, your question and the answer will be displayed in the FAQ pages. If the question will not fit in the box below, please try to rephrase it.'
+categorize: false
+expert_own: 0
+notify_asker: false
+notify_asker_simplenews_tid: 0
+notify_asker_simplenews_confirm: true
+notify_by_cron: true

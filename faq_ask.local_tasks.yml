@@ -1,0 +1,5 @@
+faq_ask.admin-experts:
+    title: 'Experts'
+    route_name: faq-ask.experts
+    base_route: system.admin_config_content
+    weight: 10

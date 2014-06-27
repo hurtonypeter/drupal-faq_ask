@@ -14,6 +14,14 @@ use Drupal\Core\Controller\ControllerBase;
  */
 class FaqAskController extends ControllerBase {
   
+  public function askPage() {
+    $build = array();
+    
+    $build['form'] = $this->formBuilder()->getForm('Drupal\faq_ask\Form\AskForm');
+    
+    return $build;
+  }
+  
   /**
    * Renders the form for the FAQ Settings page - Experts tab.
    *

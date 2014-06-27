@@ -7,15 +7,15 @@ faq-ask.experts:
         _permission: 'administer faq'
 
 faq-ask.ask:
-    path: '/faq_ask'
+    path: '/faq-ask'
     defaults:
         _title: 'Ask a question'
-        _content: ''
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::askPage'
     requirements:
         _permission: 'ask question'
 
 faq-ask.unanswered:
-    path: '/faq_ask/unanswered'
+    path: '/faq-ask/unanswered'
     defaults:
         _title: 'List more unanswered questions'
         _content: ''
@@ -23,7 +23,7 @@ faq-ask.unanswered:
         _permission: 'anwer question'
 
 faq-ask.answer:
-    path: '/faq_ask/answer/{node}'
+    path: '/faq-ask/answer/{node}'
     defaults:
         _title: 'Answer a question'
         _content: ''
@@ -31,7 +31,7 @@ faq-ask.answer:
         _permission: 'access content'
 
 faq-ask.edit:
-    path: '/faq_ask/edit/{node}'
+    path: '/faq-ask/edit/{node}'
     defaults:
         _title: 'Edit a question'
         _content: ''

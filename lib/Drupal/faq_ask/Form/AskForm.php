@@ -61,11 +61,17 @@ class AskForm extends FormBase {
     }
 
     if (!$faq_ask_settings->get('categorize')) {
-      $vocabs = $faq_ask_settings->get('vocabularies');
-      //TODO: get faq-terms
+      $faq_type = \Drupal::entityManager()->getStorage('node')->create(array('type' => 'faq'));
+      $faq_fields = $faq_type->getFieldDefinitions();
+      $faq_node_edit_form = \Drupal::getContainer()->get('entity.form_builder')->getForm($faq_type);
+      foreach ($faq_fields as $field) {
+        if ($field instanceof \Drupal\field\Entity\FieldInstanceConfig) {
+          if ($field->getType() == 'taxonomy_term_reference') {
+            $form['vocabularies'][$field->getName()] = $faq_node_edit_form[$field->getName()];
+          }
+        }
+      }
     }
-
-
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = array(
       '#type' => 'submit',
@@ -83,7 +89,7 @@ class AskForm extends FormBase {
 
     check_markup($form_state['values']['title']);
     check_markup($form_state['values']['detailed_question']);
-    if (isset($form_state['values']['notification_email']) && !valid_email_address($form_state['values']['notification_email'])) {
+    if (!empty($form_state['values']['notification_email']) && !valid_email_address($form_state['values']['notification_email'])) {
       $this->setFormError('notification_email', $form_state, $this->t('@email is not a valid email address.', array('@email' => $form_state['values']['notification_email'])));
     }
     
@@ -94,6 +100,7 @@ class AskForm extends FormBase {
    */
   public function submitForm(array &$form, array &$form_state) {
     $faq_ask_settings = $this->config('faq_ask.settings');
+    
     $node = \Drupal::entityManager()->getStorage('node')->create(array(
       'type' => 'faq',
       'langcode' => \Drupal::languageManager()->getCurrentLanguage()->id,
@@ -102,6 +109,7 @@ class AskForm extends FormBase {
       'body' => $faq_ask_settings->get('unanswered_body'),
     ));
     $node->save();
+    //TODO: asker provided categories are not saving yet
 
     drupal_set_message($this->t('Thank you for your question!'));
   }

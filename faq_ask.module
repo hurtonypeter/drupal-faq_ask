@@ -26,3 +26,16 @@ function faq_ask_permission() {
       ),
     );
 }
+
+/**
+ * Implements hook_mail().
+ */
+function faq_ask_mail($key, &$message, $params) {
+  var_dump($key);
+  var_dump($message);
+  var_dump($params);
+  
+  if ($key == 'newquestion') {
+    
+  }
+}

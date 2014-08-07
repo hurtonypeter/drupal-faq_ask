@@ -9,6 +9,7 @@ namespace Drupal\faq_ask\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\faq_ask\FaqAskHelper;
 use Drupal\user\Entity\Role;
 
 /**
@@ -40,6 +41,7 @@ class ExpertsForm extends ConfigFormBase {
       return parent::buildForm($form, $form_state);
     }
 
+    
     $vocabs = Vocabulary::loadMultiple();
     if (count($vocabs) == 0) {
       drupal_set_message(t('The Faq_Ask module requires that at least one vocabulary apply to the "faq" content type. Please go to the Taxonomy <a href="@taxo_uri">configuration page</a> to do this.', array('@taxo_uri' => url('admin/structure/taxonomy'))), 'error');
@@ -99,7 +101,7 @@ class ExpertsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Notify experts'),
       '#description' => $this->t('If this box is checked, the expert(s) for the question will be notified via email that a question awaits them. If you do not choose this option, the "Unanswered Questions" block will be the only way they will know they have questions to answer.'),
-      '#default_value' => $faq_ask_settings->get('notify'),
+      '#default_value' => $faq_ask_settings->get('notify_experts'),
     );
 
     $form['notification']['notify_asker'] = Array(

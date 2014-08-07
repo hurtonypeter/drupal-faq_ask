@@ -1,6 +1,6 @@
 expert_role: []
 vocabularies: []
-notify: false
+notify_experts: false
 default_expert: 1
 unanswered_count: 3
 unanswered_body: 'Not answered yet.'

@@ -53,6 +53,30 @@ function faq_ask_schema() {
       'nid' => array('nid', 'email'),
       ),
     );
+  
+//  $schema['faq_ask_unanswered'] = array(
+//    'description' => 'Unanswered FAQ nodes ans asker mapping.',
+//    'fields' => array(
+//      'nid' => array(
+//        'description' => 'Node identifier for notification',
+//        'type' => 'int',
+//        'unsigned' => TRUE,
+//        'not null' => TRUE,
+//        ),
+//      'email' => array(
+//        'description' => 'Node identifier for notification',
+//        'type' => 'varchar',
+//        'length' => '128',
+//        ),
+//      'notify' => array(
+//        'type' => 'int',
+//      ),
+//    ),
+//    'primary key' => array('nid'),
+//    'indexes' => array(
+//      'nid' => array('nid'),
+//    ),
+//  );
 
   $schema['faq_ask_term_index'] = array(
     'description' => 'FAQ-Ask maintained index of unpublished node/term relationships.',

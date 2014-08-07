@@ -8,16 +8,25 @@
 namespace Drupal\faq_ask\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\faq_ask\FaqAskHelper;
 
 /**
  * Controller routines for FAQ Ask routes.
  */
 class FaqAskController extends ControllerBase {
   
+  /**
+   * 
+   * 
+   * @return
+   *   The form to ask question.
+   */
   public function askPage() {
     $build = array();
     
     $build['form'] = $this->formBuilder()->getForm('Drupal\faq_ask\Form\AskForm');
+    
+    FaqAskHelper::notifyExperts();
     
     return $build;
   }

@@ -8,6 +8,7 @@
 namespace Drupal\faq_ask\Form;
 
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\faq_ask\FaqAskHelper;
 
 /**
@@ -25,7 +26,7 @@ class AskForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, array &$form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $faq_settings = $this->config('faq.settings');
     $faq_ask_settings = $this->config('faq_ask.settings');
 
@@ -86,8 +87,7 @@ class AskForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, array &$form_state) {
-
+  public function validateForm(array &$form, FormStateInterface $form_state) {
     check_markup($form_state['values']['title']);
     check_markup($form_state['values']['detailed_question']);
     if (!empty($form_state['values']['notification_email']) && !valid_email_address($form_state['values']['notification_email'])) {
@@ -98,7 +98,7 @@ class AskForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, array &$form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     $faq_ask_settings = $this->config('faq_ask.settings');
 
     // create node entity

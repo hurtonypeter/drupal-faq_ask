@@ -8,6 +8,7 @@
 namespace Drupal\faq_ask\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\faq_ask\FaqAskHelper;
 use Drupal\user\Entity\Role;
@@ -27,7 +28,7 @@ class ExpertsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, array &$form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $faq_settings = $this->config('faq.settings');
     $faq_ask_settings = $this->config('faq_ask.settings');
     $moduleHandler = \Drupal::moduleHandler();
@@ -324,17 +325,24 @@ class ExpertsForm extends ConfigFormBase {
 
     // Get all terms associated with FAQ.
     $vocabs_array = $faq_ask_settings->get('vocabularies');
-    $result = db_select('taxonomy_term_data', 'td')
-      ->condition('td.vid', $vocabs_array, 'IN')
-      ->fields('td', array('tid', 'name', 'description__value'))
-      ->orderBy('td.weight')->orderBy('td.name')
-      ->execute()
-      ->fetchAllAssoc('tid');
+//    $result = db_select('taxonomy_term_data', 'td')
+//      ->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid')
+//      ->condition('td.vid', $vocabs_array, 'IN')
+//      ->fields('ttfd', array('tid', 'name', 'description__value'))
+//      ->orderBy('td.weight')->orderBy('td.name')
+//      ->execute()
+//      ->fetchAllAssoc('tid');
+    $query = db_select('taxonomy_term_data', 'td');
+    $query->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid');
+    $query->condition('td.vid', $vocabs_array, 'IN');
+    $query->fields('ttfd', array('tid', 'name', 'description__value'));
+    $query->orderBy('ttfd.weight')->orderBy('ttfd.name');
+    $result = $query->execute()->fetchAllAssoc('tid');
 
     $faq_terms = array();
     foreach ($result as $term) {
       // Show term hierarchy?
-      $term_name = /* str_repeat('--', $term['depth']) . */ check_plain($term->name);
+      $term_name = $term->name;
       if (substr($term->description__value, 0, 9) == 'suggested') {
         $faq_terms[$term->tid] = $term_name . '<br/>--<small>' . strip_tags($term->description) . '</small>';
       }
@@ -502,7 +510,7 @@ class ExpertsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, array &$form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     
     $faq_ask_settings = $this->config('faq_ask.settings');
     

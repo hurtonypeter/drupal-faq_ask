@@ -18,7 +18,7 @@ faq-ask.unanswered:
     path: '/faq-ask/unanswered'
     defaults:
         _title: 'List more unanswered questions'
-        _content: ''
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::settingsPage'
     requirements: 
         _permission: 'anwer question'
 
@@ -26,7 +26,7 @@ faq-ask.answer:
     path: '/faq-ask/answer/{node}'
     defaults:
         _title: 'Answer a question'
-        _content: ''
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::settingsPage'
     requirements:
         _permission: 'access content'
 
@@ -34,6 +34,6 @@ faq-ask.edit:
     path: '/faq-ask/edit/{node}'
     defaults:
         _title: 'Edit a question'
-        _content: ''
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::settingsPage'
     requirements:
         _permission: 'access content'

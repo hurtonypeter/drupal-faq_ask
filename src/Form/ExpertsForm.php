@@ -10,8 +10,10 @@ namespace Drupal\faq_ask\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\faq\FaqHelper;
 use Drupal\faq_ask\FaqAskHelper;
 use Drupal\user\Entity\Role;
+use Drupal\Component\Utility\SafeMarkup;
 
 /**
  * Form for the FAQ settings page - experts tab.
@@ -303,9 +305,9 @@ class ExpertsForm extends ConfigFormBase {
         '#title' => t('Use these vocabularies'),
         '#multiple' => TRUE,
         '#default_value' => $faq_ask_settings->get('vocabularies'),
-        '#description' => $this->t('Only the terms from the selected vocabularies will be included in the list below.')
+        '#description' => SafeMarkup::set($this->t('Only the terms from the selected vocabularies will be included in the list below.')
         . ' ' . $this->t("Simply adding the 'FAQ' content type to a vocabulary will not make it eligible for experts; you must return to here to add it.")
-        . '<br/><big>' . $this->t('If you select different vocabularies, you must save the configuration BEFORE selecting users below.') . '</big>',
+        . '<br/><big>' . $this->t('If you select different vocabularies, you must save the configuration BEFORE selecting users below.') . '</big>'),
         '#weight' => 8,
       );
     } // End multiple vocabs.
@@ -324,17 +326,14 @@ class ExpertsForm extends ConfigFormBase {
     }
 
     // Get all terms associated with FAQ.
-    $vocabs_array = $faq_ask_settings->get('vocabularies');
-//    $result = db_select('taxonomy_term_data', 'td')
-//      ->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid')
-//      ->condition('td.vid', $vocabs_array, 'IN')
-//      ->fields('ttfd', array('tid', 'name', 'description__value'))
-//      ->orderBy('td.weight')->orderBy('td.name')
-//      ->execute()
-//      ->fetchAllAssoc('tid');
+    $faq_related_vocabs = FaqHelper::faqRelatedVocabularies();
+    $vids = array();
+    foreach($faq_related_vocabs as $vocabulary) {
+      $vids[] = $vocabulary->id();
+    }
     $query = db_select('taxonomy_term_data', 'td');
     $query->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid');
-    $query->condition('td.vid', $vocabs_array, 'IN');
+    $query->condition('td.vid', $vids, 'IN');
     $query->fields('ttfd', array('tid', 'name', 'description__value'));
     $query->orderBy('ttfd.weight')->orderBy('ttfd.name');
     $result = $query->execute()->fetchAllAssoc('tid');
@@ -397,7 +396,10 @@ class ExpertsForm extends ConfigFormBase {
         '#options' => $role_list,
         '#multiple' => TRUE,
         '#default_value' => $faq_ask_settings->get('expert_role'),
-        '#description' => $this->t('User 1 (@admin) will always be in the list, regardless of roles.', array('@admin' => $admin)) . '<br/><big>' . $this->t('If you select different roles, you must save the configuration BEFORE selecting users below.') . '</big>',
+        '#description' => SafeMarkup::set($this->t('User 1 (@admin) will always be in the '
+          . 'list, regardless of roles.', array('@admin' => $admin)) . '<br/><big>' 
+          . $this->t('If you select different roles, you must save the '
+            . 'configuration BEFORE selecting users below.') . '</big>'),
         '#weight' => 9,
       );
     }
@@ -414,7 +416,7 @@ class ExpertsForm extends ConfigFormBase {
       if ($only_one_expert) {
         $top .= '<p>' . $this->t('Note: Even though the check boxes below are checked, you must still click the "Save configuration" button to save the expert settings.') . '</p>';
       }
-      $top .= '<table id="faq_experts"><tr><th> </th><th>' . implode('</th><th>', $faq_terms) . '</th></tr>';
+      $top .= '<table id="faq_experts"><thead><tr><th> </th><th>' . implode('</th><th>', $faq_terms) . '</th></tr></thead>';
       if ($only_one_expert) {
         $top .= '<tr><td colspan="100">' . $this->t('Note: Even though the check boxes below are checked, you must still click the "Save configuration" button to save the expert settings.') . '</td></tr>';
       }
@@ -443,7 +445,7 @@ class ExpertsForm extends ConfigFormBase {
       if ($only_one_expert) {
         $top .= '<p>' . $this->t('Note: Even though the check boxes below are checked, you must still click the "Save configuration" button to save the expert settings.') . '</p>';
       }
-      $top .= '<table id="faq_experts"><tr><th> </th><th>' . implode('</th><th>', $faq_expert_names) . '</th></tr>';
+      $top .= '<table id="faq_experts"><thead><tr><th> </th><th>' . implode('</th><th>', $faq_expert_names) . '</th></tr></thead>';
       foreach ($faq_terms as $tid => $term_name) {
         ++$count;
         $class = $count & 1 ? 'odd' : 'even';

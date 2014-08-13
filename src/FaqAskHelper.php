@@ -10,19 +10,29 @@ namespace Drupal\faq_ask;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Crypt;
+use Drupal\Core\Mail\MailManager;
 
 /**
  * Static helper functions to FAQ Ask.
  */
 class FaqAskHelper {
 
+  /**
+   * this is just a placeholder function for testing the email notification
+   */
   public static function notifyExperts(/* NodeInterface $node */) {
     $node = \Drupal\node\Entity\Node::load(5);
     $experts = FaqAskHelper::getFaqExpertsAndEmails($node->id());
 
     //var_dump($node->language()->id);
 
-    drupal_mail('faq_ask', 'newquestion', array_values($experts), $node->language()->id, array('node' => $node), TRUE);
+    //drupal_mail() is depracated
+    //drupal_mail('faq_ask', 'newquestion', array_values($experts), $node->language()->id, array('node' => $node), TRUE);
+  
+    $mailer_service = \Drupal::service('plugin.manager.mail');
+    $mailer = $mailer_service->getInstance(array('module' => 'faq_ask', 'key' => 'faq_ask_newquestion'));
+    //$mailer->mail(array());
+    //$mailer_service->mail('faq_ask', 'newquestion', array_values($experts), $node->language()->id, array('node' => $node), null, TRUE);
   }
 
   /**

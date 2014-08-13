@@ -6,6 +6,10 @@
  * permission to create a question which will be queued for an 'expert' to answer.
  */
 
+use Drupal\node\NodeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Mail\MailInterface;
+
 /**
  * Implements hook_permission().
  *
@@ -28,13 +32,34 @@ function faq_ask_permission() {
 }
 
 /**
+ * Implements hook_node_submit()
+ * 
+ * Send notification to experts, when a new quesion is submitted
+ * 
+ * @param \Drupal\node\NodeInterface $node 
+ *   The node entity being updated in response to a form submission.
+ * @param array $form
+ *   The form being used to edit the node.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ */
+function faq_ask_node_submit(NodeInterface $node, $form, FormStateInterface $form_state){
+  $mailer = \Drupal::service('plugin.manager.mail');
+  
+}
+
+/**
  * Implements hook_mail().
+ * 
+ * @param string $key
+ *   An identifier of the mail.
+ * @param array $message
+ *   An array to be filled in.
+ * @param array $params
+ *   An array of parameters supplied by the caller of drupal_mail().
  */
 function faq_ask_mail($key, &$message, $params) {
-  var_dump($key);
-  var_dump($message);
-  var_dump($params);
-  
+  // the mail sent when a new quesion is coming in
   if ($key == 'newquestion') {
     
   }

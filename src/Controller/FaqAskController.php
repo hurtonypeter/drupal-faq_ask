@@ -26,7 +26,8 @@ class FaqAskController extends ControllerBase {
     
     $build['form'] = $this->formBuilder()->getForm('Drupal\faq_ask\Form\AskForm');
     
-    FaqAskHelper::notifyExperts();
+    // just for testing purposes
+    //FaqAskHelper::notifyExperts();
     
     return $build;
   }

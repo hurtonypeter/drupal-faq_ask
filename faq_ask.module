@@ -34,7 +34,7 @@ function faq_ask_permission() {
 /**
  * Implements hook_node_submit()
  * 
- * Send notification to experts, when a new quesion is submitted
+ * Handle asking new question and answering.
  * 
  * @param \Drupal\node\NodeInterface $node 
  *   The node entity being updated in response to a form submission.
@@ -44,7 +44,27 @@ function faq_ask_permission() {
  *   The current state of the form.
  */
 function faq_ask_node_submit(NodeInterface $node, $form, FormStateInterface $form_state){
-  $mailer = \Drupal::service('plugin.manager.mail');
+  $faq_ask_settings = \Drupal::config('faq_ask.settings');
+
+  //ask a new question
+  if(true) {
+    //register the node as unanswered question
+    
+    //handle notification to experts
+    if($faq_ask_settings->get('notify_experts')) {
+
+    }
+    
+  }
+  //answering the question
+  else {
+    //delete the node from unanswered questions
+    
+    //handle notification to the asker
+    if($faq_ask_settings->get('notify_asker')) {
+
+    }
+  }
   
 }
 

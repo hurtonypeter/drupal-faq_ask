@@ -468,7 +468,7 @@ class ExpertsForm extends ConfigFormBase {
 
     $form['experts'][$box_name]['#suffix'] .= $this->t('Those who will be answering questions will need both "answer question" and "edit faq" permissions.');
 
-    $result = db_select('faq_expert', 'fe')
+    $result = db_select('faq_ask_experts', 'fe')
       ->fields('fe', array('uid', 'tid'))
       ->execute()
       ->fetchAll();
@@ -557,9 +557,9 @@ class ExpertsForm extends ConfigFormBase {
     // Delete the current values and save the new ones.
     if (!empty($values)) {
 
-      db_delete('faq_expert')->execute();
+      db_delete('faq_ask_experts')->execute();
 
-      $db_query = db_insert('faq_expert')->fields(array('uid', 'tid'));
+      $db_query = db_insert('faq_ask_experts')->fields(array('uid', 'tid'));
       foreach ($values as $pair) {
         $db_query->values($pair);
       }

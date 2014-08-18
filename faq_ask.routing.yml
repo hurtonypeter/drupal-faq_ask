@@ -17,8 +17,8 @@ faq-ask.ask:
 faq-ask.unanswered:
     path: '/faq-ask/unanswered'
     defaults:
-        _title: 'List more unanswered questions'
-        _content: 'Drupal\faq_ask\Controller\FaqAskController::settingsPage'
+        _title: 'All Unanswered Questions'
+        _content: 'Drupal\faq_ask\Controller\FaqAskController::unanswered'
     requirements: 
         _permission: 'anwer question'
 

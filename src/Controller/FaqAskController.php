@@ -8,6 +8,7 @@
 namespace Drupal\faq_ask\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\node\Entity\Node;
 use Drupal\faq_ask\FaqAskHelper;
 
 /**
@@ -43,6 +44,21 @@ class FaqAskController extends ControllerBase {
     
     $build['faq_ask_experts_settings_form'] = $this->formBuilder()->getForm('Drupal\faq_ask\Form\ExpertsForm');
   
+    return $build;
+  }
+  
+  public function unanswered() {
+    $build = array();
+    
+    $query = db_select('faq_ask_unanswered', 'u')->fields('u', array('nid'));
+    $result = $query->execute()->fetchAllAssoc('nid');
+    
+    $nodes = Node::loadMultiple(array_keys($result));
+    
+    foreach($nodes as $node) {
+      $build['nodes'][] = node_view($node, 'teaser');
+    }
+    
     return $build;
   }
   
